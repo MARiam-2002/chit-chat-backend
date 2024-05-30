@@ -1,7 +1,7 @@
 import tokenModel from "../../../../DB/models/Token.model.js";
 import userModel from "../../../../DB/models/user.model.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
-import verifyOTP  from "../../../utils/otp.js";
+import verifyOTP from "../../../utils/otp.js";
 import otpGenerator from "otp-generator";
 import jwt from "jsonwebtoken";
 import twilio from "twilio";
@@ -51,7 +51,7 @@ export const sendOtp = asyncHandler(async (req, res, next) => {
   });
 });
 
-export const verifyOtp = async (req, res, next) => {
+export const verifyOtp = asyncHandler(async (req, res, next) => {
   const { phone, otp } = req.body;
 
   const user = await userModel.findOne({ phone });
@@ -83,4 +83,4 @@ export const verifyOtp = async (req, res, next) => {
     success: true,
     result: token,
   });
-}
+});
