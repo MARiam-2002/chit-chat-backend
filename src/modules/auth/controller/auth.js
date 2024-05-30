@@ -4,16 +4,13 @@ import { asyncHandler } from "../../../utils/asyncHandler.js";
 import verifyOTP from "../../../utils/otp.js";
 import otpGenerator from "otp-generator";
 import jwt from "jsonwebtoken";
-import twilio from "twilio";
 import otpModel from "../../../../DB/models/otp.model.js";
-import dotenv from "dotenv";
 
-dotenv.config();
 
-const client = new twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+// const client = new twilio(
+//   process.env.TWILIO_ACCOUNT_SID,
+//   process.env.TWILIO_AUTH_TOKEN
+// );
 export const sendOtp = asyncHandler(async (req, res, next) => {
   const { phone } = req.body;
   const user = await userModel.findOne({ phone });
