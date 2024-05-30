@@ -1,23 +1,5 @@
 // utils/otp.js
-import twilio from "twilio";
-import dotenv from "dotenv";
-import { asyncHandler } from "./asyncHandler.js";
 
-dotenv.config();
-
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
-
-export const sendOTP = async (phone) => {
-  const service = await client.verify.services.create({
-    friendlyName: "Chat App",
-  });
-  return client.verify
-    .services(service.sid)
-    .verifications.create({ to: phone, channel: "sms" });
-};
 
 export const verifyOTP = async (otpTime) => {
   try {
