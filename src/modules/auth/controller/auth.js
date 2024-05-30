@@ -21,9 +21,9 @@ export const sendOtp = asyncHandler(async (req, res, next) => {
   }
 
   const otp = otpGenerator.generate(6, {
-    upperCase: false,
     specialChars: false,
     lowerCaseAlphabets: false,
+    upperCaseAlphabets:false
   });
   await otpModel.findOneAndUpdate(
     {
