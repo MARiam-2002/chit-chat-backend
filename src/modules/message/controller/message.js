@@ -10,13 +10,13 @@ export const sendMessage = asyncHandler(async (req, res, next) => {
 
   let conversation = await conversationModel.findOne({
     participants: { $all: [senderId, receiverId] },
-});
+  });
 
-if (!conversation) {
+  if (!conversation) {
     conversation = await conversationModel.create({
-        participants: [senderId, receiverId],
+      participants: [senderId, receiverId],
     });
-}
+  }
   const newMessage = new messageModel({
     senderId,
     receiverId,
@@ -27,13 +27,13 @@ if (!conversation) {
   }
   await Promise.all([newMessage.save(), conversation.save()]);
 
-  		// // SOCKET IO FUNCTIONALITY WILL GO HERE
-        //   const receiverSocketId = getReceiverSocketId(receiverId);
+  // // SOCKET IO FUNCTIONALITY WILL GO HERE
+  //   const receiverSocketId = getReceiverSocketId(receiverId);
 
-        //   if (receiverSocketId) {
-		// 	// io.to(<socket_id>).emit() used to send events to specific client
-		// 	io.to(receiverSocketId).emit("newMessage", newMessage);
-		// }
+  //   if (receiverSocketId) {
+  // 	// io.to(<socket_id>).emit() used to send events to specific client
+  // 	io.to(receiverSocketId).emit("newMessage", newMessage);
+  // }
 
   return res.status(201).json({
     success: true,
@@ -41,17 +41,19 @@ if (!conversation) {
   });
 });
 
-export const getMessages=asyncHandler(async(req,res,next)=>{
-    const {id:userToChatId}=req.params;
-    const senderId=req.user._id;
-    const conversation=await conversationModel.findOne({
-        participants:{$all:[senderId,userToChatId]}
-    }).populate("messages");
-    if(!conversation){
-        return res.status(200).json([]);
-    }
-    res.status(200).json({
-        success:true,
-        messages:conversation.messages
-    });
-})
+export const getMessages = asyncHandler(async (req, res, next) => {
+  const { id: userToChatId } = req.params;
+  const senderId = req.user._id;
+  const conversation = await conversationModel
+    .findOne({
+      participants: { $all: [senderId, userToChatId] },
+    })
+    .populate("messages");
+  if (!conversation) {
+    return res.status(200).json([]);
+  }
+  res.status(200).json({
+    success: true,
+    messages: conversation.messages,
+  });
+});

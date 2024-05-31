@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 connectDB();
 bootstrap(app, express);
 
-export const server = app.listen(port, () =>
+ const server = app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`)
 );
 // export const io = new Server(server, { cors: "*" });
