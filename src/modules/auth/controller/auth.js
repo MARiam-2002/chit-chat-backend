@@ -67,7 +67,7 @@ export const verifyOtp = asyncHandler(async (req, res, next) => {
     return res.status(400).json({ msg: "OTP expired" });
   }
   const token = jwt.sign(
-    { id: user._id, email: user.phone },
+    { id: user._id, phone: user.phone },
     process.env.TOKEN_KEY
   );
 

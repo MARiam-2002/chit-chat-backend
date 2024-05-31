@@ -1,4 +1,6 @@
 import authRouter from "./modules/auth/auth.router.js";
+import messageRouter from "./modules/message/message.router.js";
+import userRouter from "./modules/user/user.router.js";
 import { globalErrorHandling } from "./utils/asyncHandler.js";
 import cors from "cors";
 import morgan from "morgan";
@@ -39,6 +41,8 @@ export const bootstrap = (app, express) => {
   app.use(express.json());
 
  app.use("/auth", authRouter);
+ app.use("/message", messageRouter);
+ app.use("/users", userRouter);
   
   app.all("*", (req, res, next) => {
     return next(new Error("not found page", { cause: 404 }));

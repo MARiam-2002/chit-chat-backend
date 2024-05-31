@@ -1,31 +1,31 @@
-// import jwt from "jsonwebtoken";
-// import { asyncHandler } from "../utils/asyncHandler.js";
-// import tokenModel from "../../DB/models/token.model.js";
-// import userModel from "../../DB/models/user.model.js";
-// export const isAuthenticated = asyncHandler(async (req, res, next) => {
-//   let token = req.headers["token"];
+import jwt from "jsonwebtoken";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import userModel from "../../DB/models/user.model.js";
+import tokenModel from "../../DB/models/Token.model.js";
+export const isAuthenticated = asyncHandler(async (req, res, next) => {
+  let token = req.headers["token"];
 
-//   if (!token) {
-//     return next(new Error("valid token is required"));
-//   }
+  if (!token) {
+    return next(new Error("valid token is required"));
+  }
 
-//   const decode = jwt.verify(token, process.env.TOKEN_KEY);
-//   if (!decode) {
-//     return next(new Error("Invalid-token"));
-//   }
+  const decode = jwt.verify(token, process.env.TOKEN_KEY);
+  if (!decode) {
+    return next(new Error("Invalid-token"));
+  }
 
-//   const tokenDB = await tokenModel.findOne({ token, isValid: true });
+  const tokenDB = await tokenModel.findOne({ token, isValid: true });
 
-//   if (!tokenDB) {
-//     return next(new Error("Token expired!"));
-//   }
+  if (!tokenDB) {
+    return next(new Error("Token expired!"));
+  }
 
-//   const user = await userModel.findOne({ email: decode.email });
+  const user = await userModel.findOne({ phone: decode.phone });
 
-//   if (!user) {
-//     return next(new Error("user not found!"));
-//   }
+  if (!user) {
+    return next(new Error("user not found!"));
+  }
 
-//   req.user = user;
-//   return next();
-// });
+  req.user = user;
+  return next();
+});

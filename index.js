@@ -3,58 +3,37 @@ import express from "express";
 import dotenv from "dotenv";
 import { bootstrap } from "./src/index.router.js";
 import { connectDB } from "./DB/connection.js";
+// import Server from "socket.io";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 connectDB();
 bootstrap(app, express);
 
-const server = app.listen(port, () =>
+export const server = app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`)
 );
+// export const io = new Server(server, { cors: "*" });
 
+// export const getReceiverSocketId = (receiverId) => {
+//   return userSocketMap[receiverId];
+// };
 
-
-//emit >send argument
-//on >recive callbackfun
-// const io = new Server(server, { cors: "*" });
-// let sockets = new Set();
-// io.on("connection", onConnected);
-// function onConnected(socket) {
-//   sockets.add(socket.id);
-
-//   io.emit("clients-total", sockets.size);
-//   // socket.emit    send to one
-//   // io.emit     send to me +all
-//   // socket.broadcast.emit   all+ not you
-
-//   socket.on("disconnect", () => {
-//     console.log("socket deleted", socket.id);
-//     sockets.delete(socket.id);
-//     io.emit("clients-total", sockets.size);
-//   });
-//   socket.on("message", (data) => {
-//     socket.broadcast.emit("chatBox-message", data);
-//   });
-//   socket.on("feedback", (data) => {
-//     socket.broadcast.emit("feed", data);
-//   });
-// }
-
-
-// var clients = {};
+// const userSocketMap = {}; // {userId: socketId}
 
 // io.on("connection", (socket) => {
-//   console.log("connetetd");
-//   console.log(socket.id, "has joined");
-//   socket.on("signin", (id) => {
-//     console.log(id);
-//     clients[id] = socket;
-//     console.log(clients);
+//   console.log("a user connected", socket.id);
+//   const userId = socket.handshake.query.userId;
+//   if (userId != "undefined") userSocketMap[userId] = socket.id;
+
+//   // io.emit() is used to send events to all the connected clients
+//   io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+//   // socket.on() is used to listen to the events. can be used both on client and server side
+
+//   socket.on("disconnect", () => {
+//     console.log("user disconnected", socket.id);
+//     delete userSocketMap[userId];
+//     io.emit("getOnlineUsers", Object.keys(userSocketMap));
 //   });
-//   socket.on("message", (msg) => {
-//     console.log(msg);
-//     let targetId = msg.targetId;
-//     if (clients[targetId]) clients[targetId].emit("message", msg);
-//   });
-// });
+//});
